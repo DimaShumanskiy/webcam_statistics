@@ -1,26 +1,54 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useRef, useState } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import './App.css';
+import Webcam from 'react-webcam';
+
+const App = (): any => {
+    const webcamRef = useRef(null);
+    const [playing, setPlaying] = useState<boolean>(false);
+    console.log(playing);
+
+    const stopPlay = (): any => {
+        setPlaying(false);
+    };
+    const startPlay = (): any => {
+        setPlaying(true);
+    };
+    const videoConstraints = {
+        width: 1280,
+        height: 720,
+        facingMode: 'user',
+    };
+
+    return (
+        <div className="App">
+            <div className="container">
+                {playing ? (
+                    <Webcam
+                        audio={false}
+                        height={720}
+                        ref={webcamRef}
+                        screenshotFormat="image/jpeg"
+                        width={1280}
+                        videoConstraints={videoConstraints}
+                    />
+                ) : (
+                    <div>padasd</div>
+                )}
+            </div>
+            <div className="input">
+                {playing ? (
+                    <button type="button" className="btn" onClick={stopPlay}>
+                        Stop
+                    </button>
+                ) : (
+                    <button type="button" className="btn" onClick={startPlay}>
+                        Start
+                    </button>
+                )}
+            </div>
+        </div>
+    );
+};
 
 export default App;
