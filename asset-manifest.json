@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/webcam_statistics/static/css/main.b47b5e25.css",
+    "main.js": "/webcam_statistics/static/js/main.c4f4d8a0.js",
+    "index.html": "/webcam_statistics/index.html",
+    "main.b47b5e25.css.map": "/webcam_statistics/static/css/main.b47b5e25.css.map",
+    "main.c4f4d8a0.js.map": "/webcam_statistics/static/js/main.c4f4d8a0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b47b5e25.css",
+    "static/js/main.c4f4d8a0.js"
+  ]
+}
