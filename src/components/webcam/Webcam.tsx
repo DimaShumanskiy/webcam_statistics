@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { FC, useRef } from 'react';
 
 import Webcam from 'react-webcam';
 
@@ -6,7 +6,7 @@ import { useAppSelector } from '../../state/store';
 
 import s from './Webcam.module.css';
 
-const WebcamBlock = (): any => {
+const WebcamBlock: FC = () => {
     const webcamRef = useRef(null);
     const playing = useAppSelector<boolean>(state => state.webcam.playing);
     const videoConstraints = {
@@ -28,7 +28,9 @@ const WebcamBlock = (): any => {
                     videoConstraints={videoConstraints}
                 />
             ) : (
-                <div className={s.content}>Нажмите старт для старта видео звонка</div>
+                <span className={s.text}>
+                    Press &laquo;Start&raquo; to start a video call
+                </span>
             )}
         </div>
     );

@@ -1,14 +1,21 @@
 .container {
   width: 700px;
-  height: 500px;
+  height: 420px;
   background-color: darkslategrey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  margin-top: 25px;
 }
 
 .webcam {
-  width: 700px;
-  height: 500px;
+  width: 630px;
+  height: 355px;
+  border-radius: 20px;
 }
 
-.content {
-
+.text {
+  font-weight: 600;
+  font-size: 26px;
 }

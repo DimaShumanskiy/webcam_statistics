@@ -3,11 +3,7 @@ import { v1 } from 'uuid';
 import { One, Zero } from '../staticNumber';
 
 const initialState: InitialStateType = {
-    called: [
-        // { data: 123, start: 123, stop: 123, id: '1' },
-        // { data: 123, start: 123, stop: 132, id: '2' },
-        // { data: 123, start: 123, stop: 132, id: '3' },
-    ],
+    called: [{ data: 123, start: 123, stop: 123, id: '1' }],
 };
 type InitialStateType = {
     called: CalledType[];
@@ -22,7 +18,7 @@ export type CalledType = {
 type ActionsType =
     | ReturnType<typeof AddCalledStart>
     | ReturnType<typeof AddCalledStop>
-    | ReturnType<typeof RemoveCalled>;
+    | ReturnType<typeof RemoveItemCalled>;
 
 export const statisticReducer = (
     state: InitialStateType = initialState,
@@ -47,7 +43,10 @@ export const statisticReducer = (
             };
         }
         case 'REMOVE-CALLED':
-            return { ...state };
+            return {
+                ...state,
+                called: state.called.filter(f => f.id !== action.id),
+            };
         default:
             return { ...state };
     }
@@ -59,4 +58,4 @@ export const AddCalledStart = (data?: number, start?: number) =>
 export const AddCalledStop = (stop?: number) =>
     ({ type: 'ADD-CALLED-STOP', stop } as const);
 
-export const RemoveCalled = (id: string) => ({ type: 'REMOVE-CALLED', id } as const);
+export const RemoveItemCalled = (id: string) => ({ type: 'REMOVE-CALLED', id } as const);

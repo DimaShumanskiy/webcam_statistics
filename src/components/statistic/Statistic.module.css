@@ -1,0 +1,57 @@
+.title{
+  font-weight: 600;
+  font-size: 20px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 700px;
+}
+
+.headerItem {
+  display: inline-block;
+  width: 175px;
+  height: 40px;
+  text-align: center;
+  vertical-align: middle;
+  border-top: 2px rgb(255, 0, 0, 0.5) solid;
+  border-bottom: 2px rgb(255, 0, 0, 0.5) solid;
+  line-height: 35px;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.button {
+  width: 25px;
+  height: 25px;
+  background-color: gray;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  position: absolute;
+  left: 96%;
+  top: 6px;
+}
+
+.statistic {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.statisticItem {
+  display: inline-block;
+  width: 175px;
+  height: 40px;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 2px solid rgb(0, 0, 255, 0.5);
+  line-height: 35px;
+}
+.generalStatistics{
+  font-weight: 600;
+  font-size: 20px;
+}
+.generalStatistics_item{
+  margin: 3px 0 3px;
+}
