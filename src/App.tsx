@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 
 import { useDispatch } from 'react-redux';
 
@@ -7,38 +7,53 @@ import WebcamBlock from './components/webcam/Webcam';
 import { AddCalledStart, AddCalledStop, CalledType } from './state/statisticReducer';
 import { useAppSelector } from './state/store';
 import { changePlaying } from './state/webcamReducer';
+import { Four, Zero } from './staticNumber';
 
 const App: FC = () => {
     const dispatch = useDispatch();
+
     const playing = useAppSelector<boolean>(state => state.webcam.playing);
     const called = useAppSelector<CalledType[]>(state => state.statistic.called);
-    const [date, setDate] = useState<Date>();
-    const [lastDate, setLastDate] = useState<Date>();
 
-    const newDate = date?.toLocaleDateString();
-    const newTime = date?.toLocaleTimeString();
     const startStopPlay = (): void => {
         dispatch(changePlaying());
+        const newTime = Date.now();
+
         if (!playing) {
-            const x = new Date();
-            setDate(x);
-            const newDateX = x.toLocaleDateString();
-            const newTimeX = x.toLocaleTimeString();
-            dispatch(AddCalledStart(newDateX, newTimeX));
+            dispatch(AddCalledStart(newTime, newTime));
         } else {
-            const x = new Date();
-            const newTimeX = x.toLocaleTimeString();
-            setLastDate(new Date());
-            dispatch(AddCalledStop(newTimeX));
+            dispatch(AddCalledStop(newTime));
         }
     };
+    const onClickHandler = (): void => {};
 
-    // const x = new Date(called[0].stop).getTime(); // мм сек
+    const sum = called.reduce(
+        (acc, m) => (m.stop && m.start ? m.stop - m.start : Zero) + acc,
+        Zero,
+    );
+    const middle = sum / called.length;
+
     const data = called.map(m => (
         <div className={s.statistic} key={m.id}>
-            <span>data:{m.data}</span>
-            <span>time:{m.start}</span>
-            <span>last data:{m.stop}</span>
+            <span>data:{new Date(m.data || Zero).toLocaleDateString()}</span>
+            <span>time: {new Date(m.start || Zero).toLocaleTimeString()}</span>
+            {m.stop ? (
+                <span>last data:{new Date(m.stop || Zero).toLocaleTimeString()}</span>
+            ) : (
+                <span>что то</span>
+            )}
+            <span>
+                duration:
+                {new Date(m.stop && m.start ? m.stop - m.start : Zero)
+                    .toLocaleTimeString('ru-RU', {
+                        timeZone: 'UTC',
+                        timeZoneName: 'short',
+                    })
+                    .slice(Zero, -Four)}
+            </span>
+            <button type="button" className={s.btn} onClick={onClickHandler}>
+                DELETE
+            </button>
         </div>
     ));
 
@@ -51,15 +66,25 @@ const App: FC = () => {
                     {playing ? 'Stop' : 'Start'}
                 </button>
             </div>
-            <div className={s.statistic}>
-                <span>data:{newDate}</span>
-                <span>time:{newTime}</span>
-                <span>last data:{lastDate?.toLocaleTimeString()}</span>
-            </div>
-
-            <span>среднее значение:</span>
-            <span>сумма:</span>
             {data}
+            <span>
+                среднее:
+                {new Date(middle)
+                    .toLocaleTimeString('ru-RU', {
+                        timeZone: 'UTC',
+                        timeZoneName: 'short',
+                    })
+                    .slice(Zero, -Four)}
+            </span>
+            <span>
+                сумма:
+                {new Date(sum)
+                    .toLocaleTimeString('ru-RU', {
+                        timeZone: 'UTC',
+                        timeZoneName: 'short',
+                    })
+                    .slice(Zero, -Four)}
+            </span>
         </div>
     );
 };
