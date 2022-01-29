@@ -1,51 +1,28 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 
 import './App.css';
-import Webcam from 'react-webcam';
+import { useDispatch } from 'react-redux';
+
+import WebcamBlock from './components/webcam/Webcam';
+import { useAppSelector } from './state/store';
+import { changePlaying } from './state/webcamReducer';
 
 const App = (): any => {
-    const webcamRef = useRef(null);
-    const [playing, setPlaying] = useState<boolean>(false);
-    console.log(playing);
+    const dispatch = useDispatch();
+    const playing = useAppSelector<boolean>(state => state.webcam.playing);
 
-    const stopPlay = (): any => {
-        setPlaying(false);
-    };
-    const startPlay = (): any => {
-        setPlaying(true);
-    };
-    const videoConstraints = {
-        width: 1280,
-        height: 720,
-        facingMode: 'user',
+    const startStopPlay = (): any => {
+        dispatch(changePlaying());
     };
 
     return (
         <div className="App">
-            <div className="container">
-                {playing ? (
-                    <Webcam
-                        audio={false}
-                        height={720}
-                        ref={webcamRef}
-                        screenshotFormat="image/jpeg"
-                        width={1280}
-                        videoConstraints={videoConstraints}
-                    />
-                ) : (
-                    <div>padasd</div>
-                )}
-            </div>
+            <div className="container" />
+            <WebcamBlock />
             <div className="input">
-                {playing ? (
-                    <button type="button" className="btn" onClick={stopPlay}>
-                        Stop
-                    </button>
-                ) : (
-                    <button type="button" className="btn" onClick={startPlay}>
-                        Start
-                    </button>
-                )}
+                <button type="button" className="btn" onClick={startStopPlay}>
+                    {playing ? 'Stop' : 'Start'}
+                </button>
             </div>
         </div>
     );
