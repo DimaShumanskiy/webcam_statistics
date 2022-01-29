@@ -3,7 +3,7 @@ import { v1 } from 'uuid';
 import { One, Zero } from '../staticNumber';
 
 const initialState: InitialStateType = {
-    called: [{ data: 123, start: 123, stop: 123, id: '1' }],
+    called: [],
 };
 type InitialStateType = {
     called: CalledType[];
