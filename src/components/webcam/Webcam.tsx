@@ -1,19 +1,18 @@
-import React, { FC, useRef } from 'react';
+import React, { FC } from 'react';
 
 import Webcam from 'react-webcam';
 
-import { useAppSelector } from '../../state/store';
-
 import s from './Webcam.module.css';
 
+import { useAppSelector } from 'state/store';
+
+const videoConstraints = {
+    width: 1280,
+    height: 720,
+    facingMode: 'user',
+};
 const WebcamBlock: FC = () => {
-    const webcamRef = useRef(null);
     const playing = useAppSelector<boolean>(state => state.webcam.playing);
-    const videoConstraints = {
-        width: 1280,
-        height: 720,
-        facingMode: 'user',
-    };
 
     return (
         <div className={s.container}>
@@ -22,8 +21,6 @@ const WebcamBlock: FC = () => {
                     className={s.webcam}
                     audio={false}
                     height={720}
-                    ref={webcamRef}
-                    screenshotFormat="image/jpeg"
                     width={1280}
                     videoConstraints={videoConstraints}
                 />

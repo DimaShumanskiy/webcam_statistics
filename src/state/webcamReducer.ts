@@ -12,11 +12,11 @@ export const webcamReducer = (
     action: ActionsType,
 ): InitialStateType => {
     switch (action.type) {
-        case 'WEBCAM/CHANGE-PLAYING':
+        case 'CHANGE-PLAYING':
             return { ...state, playing: !state.playing };
         default:
             return { ...state };
     }
 };
 
-export const changePlaying = () => ({ type: 'WEBCAM/CHANGE-PLAYING' } as const);
+export const changePlaying = () => ({ type: 'CHANGE-PLAYING' } as const);

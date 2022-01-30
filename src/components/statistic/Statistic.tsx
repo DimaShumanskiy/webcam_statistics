@@ -2,34 +2,38 @@ import React, { FC } from 'react';
 
 import { useDispatch } from 'react-redux';
 
-import { CalledType, RemoveItemCalled } from '../../state/statisticReducer';
-import { useAppSelector } from '../../state/store';
-import { Four, Zero } from '../../staticNumber';
-
 import s from './Statistic.module.css';
+
+import { CalledType, RemoveItemCalled } from 'state/statisticReducer';
+import { useAppSelector } from 'state/store';
+import { Four, Zero } from 'staticNumber';
 
 const Statistic: FC = () => {
     const dispatch = useDispatch();
     const called = useAppSelector<CalledType[]>(state => state.statistic.called);
 
-    const amountOfTime = called.reduce(
-        (acc, m) => (m.stop && m.start ? m.stop - m.start : Zero) + acc,
-        Zero,
-    );
-    const middle = amountOfTime / called.length;
+    // get the sum of the video duration
+    const amountOfTime = called.reduce((acc, time) => {
+        const timeForCall =
+            time.stop && time.dataAndStart ? time.stop - time.dataAndStart : Zero;
+        return timeForCall + acc;
+    }, Zero);
+
+    // get mean time
+    const timeAverage = amountOfTime / called.length;
 
     const onClickHandler = (id: string): void => {
         dispatch(RemoveItemCalled(id));
     };
-
+    // time statistics from redux
     const statistic = called.map(m => (
         <div className={s.statistic} key={m.id}>
             <span className={s.statisticItem}>
-                {new Date(m.data || Zero).toLocaleDateString()}
+                {new Date(m.dataAndStart || Zero).toLocaleDateString()}
             </span>
 
             <span className={s.statisticItem}>
-                {new Date(m.start || Zero).toLocaleTimeString()}
+                {new Date(m.dataAndStart || Zero).toLocaleTimeString()}
             </span>
 
             {m.stop ? (
@@ -42,7 +46,7 @@ const Statistic: FC = () => {
 
             {m.stop ? (
                 <span className={s.statisticItem}>
-                    {new Date(m.stop && m.start ? m.stop - m.start : Zero)
+                    {new Date(m.stop && m.dataAndStart ? m.stop - m.dataAndStart : Zero)
                         .toLocaleTimeString('ru-RU', {
                             timeZone: 'UTC',
                             timeZoneName: 'short',
@@ -62,9 +66,9 @@ const Statistic: FC = () => {
         </div>
     ));
 
-    const mean = middle ? (
+    const mean = timeAverage ? (
         <span>
-            {new Date(middle)
+            {new Date(timeAverage)
                 .toLocaleTimeString('ru-RU', {
                     timeZone: 'UTC',
                     timeZoneName: 'short',
@@ -93,14 +97,14 @@ const Statistic: FC = () => {
             <span className={s.title}>Webcam call statistics</span>
             <div className={s.header}>
                 <span className={s.headerItem}>data</span>
-                <span className={s.headerItem}>start time</span>
-                <span className={s.headerItem}>end time</span>
-                <span className={s.headerItem}>duration</span>
+                <span className={s.headerItem}>call start</span>
+                <span className={s.headerItem}>end of call</span>
+                <span className={s.headerItem}>call duration</span>
             </div>
             {statistic}
             <div className={s.generalStatistics}>
-                <p className={s.generalStatistics_item}>Mean: {mean}</p>
-                <p className={s.generalStatistics_item}>Sum: {sum}</p>
+                <p className={s.generalStatistics_item}>Average call duration: {mean}</p>
+                <p className={s.generalStatistics_item}>Total talk time: {sum}</p>
             </div>
         </>
     );

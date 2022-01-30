@@ -1,6 +1,6 @@
 import { v1 } from 'uuid';
 
-import { One, Zero } from '../staticNumber';
+import { One, Zero } from 'staticNumber';
 
 const initialState: InitialStateType = {
     called: [],
@@ -9,8 +9,7 @@ type InitialStateType = {
     called: CalledType[];
 };
 export type CalledType = {
-    data?: number;
-    start?: number;
+    dataAndStart?: number; // use one value for start date and time
     stop?: number;
     id: string;
 };
@@ -28,10 +27,7 @@ export const statisticReducer = (
         case 'ADD-CALLED-START':
             return {
                 ...state,
-                called: [
-                    ...state.called,
-                    { id: v1(), data: action.data, start: action.start },
-                ],
+                called: [...state.called, { id: v1(), dataAndStart: action.data }],
             };
         case 'ADD-CALLED-STOP': {
             const copyState = state.called.slice(Zero, -One);
@@ -52,10 +48,10 @@ export const statisticReducer = (
     }
 };
 
-export const AddCalledStart = (data?: number, start?: number) =>
-    ({ type: 'ADD-CALLED-START', data, start } as const);
+export const AddCalledStart = (data: number) =>
+    ({ type: 'ADD-CALLED-START', data } as const);
 
-export const AddCalledStop = (stop?: number) =>
+export const AddCalledStop = (stop: number) =>
     ({ type: 'ADD-CALLED-STOP', stop } as const);
 
 export const RemoveItemCalled = (id: string) => ({ type: 'REMOVE-CALLED', id } as const);

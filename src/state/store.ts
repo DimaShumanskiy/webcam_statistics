@@ -1,8 +1,8 @@
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { combineReducers, createStore } from 'redux';
 
-import { statisticReducer } from './statisticReducer';
-import { webcamReducer } from './webcamReducer';
+import { statisticReducer } from 'state/statisticReducer';
+import { webcamReducer } from 'state/webcamReducer';
 
 const rootReducer = combineReducers({
     statistic: statisticReducer,

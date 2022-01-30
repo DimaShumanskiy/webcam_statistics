@@ -2,12 +2,12 @@ import React, { FC } from 'react';
 
 import { useDispatch } from 'react-redux';
 
-import s from './App.module.css';
-import Statistic from './components/statistic/Statistic';
-import WebcamBlock from './components/webcam/Webcam';
-import { AddCalledStart, AddCalledStop } from './state/statisticReducer';
-import { useAppSelector } from './state/store';
-import { changePlaying } from './state/webcamReducer';
+import s from 'App.module.css';
+import Statistic from 'components/statistic/Statistic';
+import WebcamBlock from 'components/webcam/Webcam';
+import { AddCalledStart, AddCalledStop } from 'state/statisticReducer';
+import { useAppSelector } from 'state/store';
+import { changePlaying } from 'state/webcamReducer';
 
 const App: FC = () => {
     const dispatch = useDispatch();
@@ -16,10 +16,9 @@ const App: FC = () => {
 
     const startStopPlay = (): void => {
         dispatch(changePlaying());
-        const newTime = Date.now();
-
+        const newTime = Date.now(); // data format UTC
         if (!playing) {
-            dispatch(AddCalledStart(newTime, newTime));
+            dispatch(AddCalledStart(newTime));
         } else {
             dispatch(AddCalledStop(newTime));
         }
