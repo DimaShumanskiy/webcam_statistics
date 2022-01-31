@@ -10,43 +10,43 @@ import { Four, Zero } from 'staticNumber';
 
 const Statistic: FC = () => {
     const dispatch = useDispatch();
-    const called = useAppSelector<CalledType[]>(state => state.statistic.called);
+    const calls = useAppSelector<CalledType[]>(state => state.statistic.calls);
 
     // get the sum of the video duration
-    const amountOfTime = called.reduce((acc, time) => {
+    const amountOfTime = calls.reduce((acc, call) => {
         const timeForCall =
-            time.stop && time.dataAndStart ? time.stop - time.dataAndStart : Zero;
+            call.timeStop && call.timeStart ? call.timeStop - call.timeStart : Zero;
         return timeForCall + acc;
     }, Zero);
 
     // get mean time
-    const timeAverage = amountOfTime / called.length;
+    const timeAverage = amountOfTime / calls.length;
 
     const onClickHandler = (id: string): void => {
         dispatch(RemoveItemCalled(id));
     };
     // time statistics from redux
-    const statistic = called.map(m => (
+    const statistic = calls.map(m => (
         <div className={s.statistic} key={m.id}>
             <span className={s.statisticItem}>
-                {new Date(m.dataAndStart || Zero).toLocaleDateString()}
+                {new Date(m.timeStart || Zero).toLocaleDateString()}
             </span>
 
             <span className={s.statisticItem}>
-                {new Date(m.dataAndStart || Zero).toLocaleTimeString()}
+                {new Date(m.timeStart || Zero).toLocaleTimeString()}
             </span>
 
-            {m.stop ? (
+            {m.timeStop ? (
                 <span className={s.statisticItem}>
-                    {new Date(m.stop || Zero).toLocaleTimeString()}
+                    {new Date(m.timeStop || Zero).toLocaleTimeString()}
                 </span>
             ) : (
                 <span className={s.statisticItem} />
             )}
 
-            {m.stop ? (
+            {m.timeStop ? (
                 <span className={s.statisticItem}>
-                    {new Date(m.stop && m.dataAndStart ? m.stop - m.dataAndStart : Zero)
+                    {new Date(m.timeStop && m.timeStart ? m.timeStop - m.timeStart : Zero)
                         .toLocaleTimeString('ru-RU', {
                             timeZone: 'UTC',
                             timeZoneName: 'short',

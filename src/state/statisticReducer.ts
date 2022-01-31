@@ -3,14 +3,14 @@ import { v1 } from 'uuid';
 import { One, Zero } from 'staticNumber';
 
 const initialState: InitialStateType = {
-    called: [],
+    calls: [],
 };
 type InitialStateType = {
-    called: CalledType[];
+    calls: CalledType[];
 };
 export type CalledType = {
-    dataAndStart?: number; // use one value for start date and time
-    stop?: number;
+    timeStart?: number; // use one value for start date and time
+    timeStop?: number;
     id: string;
 };
 
@@ -27,31 +27,34 @@ export const statisticReducer = (
         case 'ADD-CALLED-START':
             return {
                 ...state,
-                called: [...state.called, { id: v1(), dataAndStart: action.data }],
+                calls: [...state.calls, { id: v1(), timeStart: action.timeStart }],
             };
         case 'ADD-CALLED-STOP': {
-            const copyState = state.called.slice(Zero, -One);
-            const copyLastItem = state.called.slice(-One);
-            const result = [...copyState, { ...copyLastItem[Zero], stop: action.stop }];
+            const copyState = state.calls.slice(Zero, -One);
+            const copyLastItem = state.calls.slice(-One);
+            const result = [
+                ...copyState,
+                { ...copyLastItem[Zero], timeStop: action.timeStop },
+            ];
             return {
                 ...state,
-                called: result,
+                calls: result,
             };
         }
         case 'REMOVE-CALLED':
             return {
                 ...state,
-                called: state.called.filter(f => f.id !== action.id),
+                calls: state.calls.filter(f => f.id !== action.id),
             };
         default:
             return { ...state };
     }
 };
 
-export const AddCalledStart = (data: number) =>
-    ({ type: 'ADD-CALLED-START', data } as const);
+export const AddCalledStart = (timeStart: number) =>
+    ({ type: 'ADD-CALLED-START', timeStart } as const);
 
-export const AddCalledStop = (stop: number) =>
-    ({ type: 'ADD-CALLED-STOP', stop } as const);
+export const AddCalledStop = (timeStop: number) =>
+    ({ type: 'ADD-CALLED-STOP', timeStop } as const);
 
 export const RemoveItemCalled = (id: string) => ({ type: 'REMOVE-CALLED', id } as const);
